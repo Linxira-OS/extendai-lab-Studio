@@ -1,0 +1,6 @@
+feature	ctrl_1	ctrl_2	treat_1	treat_2
+GeneA	100	110	240	230
+GeneB	80	85	82	79
+GeneC	15	18	60	55
+GeneD	300	290	310	305
+GeneE	40	45	20	18

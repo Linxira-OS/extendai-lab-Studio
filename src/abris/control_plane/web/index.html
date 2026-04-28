@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ABRIS Control Plane</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <div class="hero-copy">
+          <div class="eyebrow">ABRIS · Research Control Plane</div>
+          <h1>ABRIS Control Plane</h1>
+          <p>统一查看运行闭环、证据、活动流与产物，面向研究操作与审计而设计。</p>
+        </div>
+        <div id="connection-status" class="badge">未登录</div>
+      </header>
+
+      <section class="panel login-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>登录</h2>
+            <p class="section-note">登录后即可查看 runs、evidence、activity 与 artifacts。</p>
+          </div>
+        </div>
+        <form id="login-form">
+          <label>
+            用户名
+            <input id="username" name="username" type="text" value="admin" required />
+          </label>
+          <label>
+            密码
+            <input id="password" name="password" type="password" value="abris-admin" required />
+          </label>
+          <button type="submit">登录</button>
+        </form>
+        <p id="login-message" class="muted"></p>
+      </section>
+
+      <section class="dashboard-grid">
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <h2>总览</h2>
+              <p class="section-note">当前控制面的关键计数与停滞指标。</p>
+            </div>
+          </div>
+          <div id="totals" class="stats-grid"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <h2>会话</h2>
+              <p class="section-note">运行时会话与 token 使用概览。</p>
+            </div>
+          </div>
+          <div id="sessions"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <h2>运行闭环</h2>
+              <p class="section-note">权威 run 状态、步骤时间线、证据与工件聚合视图。</p>
+            </div>
+          </div>
+          <div id="runs"></div>
+          <div id="run-panel" class="run-panel">选择 run 后显示权威状态</div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <h2>当前会话用量</h2>
+              <p class="section-note">查看所选会话的 token / cost 摘要。</p>
+            </div>
+          </div>
+          <pre id="usage-panel">暂无数据</pre>
+        </section>
+
+        <section class="panel panel-wide">
+          <div class="panel-heading">
+            <div>
+              <h2>活动流</h2>
+              <p class="section-note">最近事件快照，便于追踪系统当前在做什么。</p>
+            </div>
+          </div>
+          <div id="activity-feed"></div>
+        </section>
+
+        <section class="panel panel-wide">
+          <div class="panel-heading">
+            <div>
+              <h2>证据检索</h2>
+              <p class="section-note">通过 evidence pipeline 检索结构化文献证据并回挂到 run。</p>
+            </div>
+          </div>
+          <form id="evidence-form" class="inline-form">
+            <input id="evidence-query" name="query" type="text" placeholder="输入研究问题或关键词" />
+            <input id="evidence-limit" name="limit" type="number" min="1" max="20" value="5" />
+            <button type="submit">检索证据</button>
+          </form>
+          <div id="evidence-summary" class="muted">暂无证据检索</div>
+          <div id="evidence-results"></div>
+        </section>
+
+        <section class="panel panel-wide">
+          <div class="panel-heading">
+            <div>
+              <h2>产物浏览</h2>
+              <p class="section-note">受 file guard 保护的元数据视图，不直接暴露危险原始内容。</p>
+            </div>
+          </div>
+          <form id="artifacts-form" class="inline-form">
+            <input id="artifact-path" name="path" type="text" value="." />
+            <button type="submit">刷新</button>
+          </form>
+          <div id="artifacts"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+  </html>

@@ -1,0 +1,26 @@
+tools:
+  cli:
+    - name: bwa
+      category: alignment
+    - name: star
+      category: alignment
+    - name: samtools
+      category: file-processing
+    - name: bcftools
+      category: variant-calling
+    - name: fastqc
+      category: quality-control
+  python:
+    - name: scanpy
+      category: single-cell
+    - name: pysam
+      category: file-processing
+    - name: biopython
+      category: sequence-processing
+  r:
+    - name: DESeq2
+      category: differential-analysis
+    - name: edgeR
+      category: differential-analysis
+    - name: Seurat
+      category: single-cell

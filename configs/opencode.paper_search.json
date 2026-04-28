@@ -1,0 +1,21 @@
+{
+  "mcp": {
+    "paper-search": {
+      "type": "local",
+      "enabled": true,
+      "timeout": 15000,
+      "command": [
+        "{paper_search_python}",
+        "-m",
+        "paper_search_mcp.server"
+      ],
+      "environment": {
+        "PAPER_SEARCH_MCP_DEFAULT_SOURCES": "arxiv,pubmed,pmc,europepmc,crossref,openalex,dblp,zenodo,hal,doaj",
+        "PAPER_SEARCH_MCP_ENABLE_SCIHUB": "0",
+        "PAPER_SEARCH_MCP_UNPAYWALL_EMAIL": "{paper_search_unpaywall_email}",
+        "PAPER_SEARCH_MCP_SEMANTIC_SCHOLAR_API_KEY": "{paper_search_semantic_scholar_api_key}",
+        "PAPER_SEARCH_MCP_CORE_API_KEY": "{paper_search_core_api_key}"
+      }
+    }
+  }
+}

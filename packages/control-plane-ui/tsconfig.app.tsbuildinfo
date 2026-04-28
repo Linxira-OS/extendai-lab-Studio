@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/api.ts","./src/controlplanedata.ts","./src/main.tsx","./src/mockdata.ts","./src/opencodemessagepreview.ts","./src/vite-env.d.ts","./src/components/dashboardoverview.tsx","./src/components/loginscreen.tsx","./src/components/themeprovider.tsx","./src/components/workbenchview.tsx","./src/components/controlplanestatus.tsx"],"version":"5.9.3"}

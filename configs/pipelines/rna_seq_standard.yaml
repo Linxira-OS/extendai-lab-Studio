@@ -1,0 +1,14 @@
+id: rna-seq-standard
+name: RNA-seq Standard Pipeline
+steps:
+  - skill: fastqc
+  - skill: trim_galore
+  - skill: star_alignment
+  - skill: featurecounts
+  - skill: deseq2
+  - skill: go_enrichment
+outputs:
+  - differential_expression_results
+  - volcano_plot
+  - heatmap
+  - enrichment_report

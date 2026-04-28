@@ -1,0 +1,9 @@
+id: count-matrix-prototype
+name: Count Matrix Prototype Pipeline
+steps:
+  - skill: count_matrix_summary
+outputs:
+  - validation_summary
+  - top_features
+  - high_variance_features
+  - comparison_summary

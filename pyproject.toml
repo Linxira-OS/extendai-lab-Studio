@@ -1,0 +1,28 @@
+[project]
+name = "abris"
+version = "0.1.0"
+description = "Scaffold for a layered bioinformatics AI analysis system"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "ABRIS Team" }
+]
+
+[project.scripts]
+abris = "abris.cli:main"
+abris-control-plane = "abris.control_plane.api:main"
+abris-ui = "abris.launcher:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"abris.control_plane.web" = ["*.html", "*.css", "*.js"]
+"abris.control_plane.webapp" = ["dist/**/*", "dist/*", "dist/assets/*"]
