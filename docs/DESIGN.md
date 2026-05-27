@@ -4,7 +4,7 @@
 
 ABRIS（AI Bioinformatics Research Intelligence System）是一个基于 OpenCode 内核的生物信息学全自动 AI 研究系统。系统通过多 Agent 长链推理和多模型协同编排，实现从文献检索、数据分析、代码执行到成果审阅的端到端自动化科研流水线。
 
-- 开源仓库：https://github.com/BOHUYESHAN-APB/ABRIS
+- 开源仓库：https://github.com/Linxira-OS/extendai-lab-Studio
 - 开源协议：GNU AGPL-3.0
 - 项目性质：课题组核心研究工具，生物信息学全自动分析平台
 

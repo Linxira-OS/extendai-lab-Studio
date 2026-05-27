@@ -1,6 +1,6 @@
-# ABRIS
+# extendai-lab-Studio
 
-ABRIS is an OpenCode-native bioinformatics AI system scaffold.
+extendai-lab-Studio is an OpenCode-native bioinformatics AI system scaffold (formerly ABRIS).
 
 OpenCode is the embedded kernel. ABRIS is the product and domain layer that governs bioinformatics workflows, safety, acquisition, and skills on top of that kernel.
 
