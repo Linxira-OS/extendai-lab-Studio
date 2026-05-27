@@ -1,16 +1,30 @@
-# ABRIS 系统设计文档
+# extendai-lab-Studio 系统设计文档
 
 ## 项目概览
 
-ABRIS（AI Bioinformatics Research Intelligence System）是一个基于 OpenCode 内核的生物信息学全自动 AI 研究系统。系统通过多 Agent 长链推理和多模型协同编排，实现从文献检索、数据分析、代码执行到成果审阅的端到端自动化科研流水线。
+extendai-lab-Studio（原 ABRIS）是面向科学研究的 AI 编排与自动化层。它以 OpenCode 为嵌入式内核，协调多个大模型执行复杂的研究流水线，并将领域特定工作委托给外部技能仓库。
+
+本项目**不是技能库**，而是将技能、模型和工具编排为端到端研究流水线的系统。
 
 - 开源仓库：https://github.com/Linxira-OS/extendai-lab-Studio
 - 开源协议：GNU AGPL-3.0
-- 项目性质：课题组核心研究工具，生物信息学全自动分析平台
+- 项目性质：课题组核心研究工具，科学分析自动化编排平台
+
+### 与外部仓库的分工
+
+| 项目 | 角色 |
+|------|------|
+| **extendai-lab-Studio**（本项目） | 编排层 — 多模型协调、流水线规划、自治治理、控制面 |
+| [openagent-labforge](https://github.com/Linxira-OS/openagent-labforge) | OpenCode 生态 — 运行时框架、插件系统、SDK 集成 |
+| [bioSkills](https://github.com/BOHUYESHAN-APB/bioSkills) | 生信技能库 — 400+ SKILL.md 模式（基因组学、转录组学、蛋白质组学等） |
+| [ChemClaw](https://github.com/BOHUYESHAN-APB/ChemClaw) | 化学技能库 — 分子模拟、光谱预测、ADMET、化学文件转换 |
+| [ClawBio](https://github.com/BOHUYESHAN-APB/ClawBio) | 生信执行层 — 59 个可执行技能，带编排器和可复现性包 |
+
+技能通过 openagent-labforge 的插件机制加载到本系统的 Layer 1，本系统负责调度和编排，不重复实现技能本身。
 
 ## 核心痛点
 
-生物信息学分析链条极长，从文献检索、数据清洗、工具选型、代码编写、参数调优、结果验证到成果撰写，需要跨越多个专业领域。传统模式下研究者需手动切换数十种工具和数据库，上下文极易断裂。现有单模型方案存在三大瓶颈：
+科学研究中分析链条极长，以生物信息学为例：从文献检索、数据清洗、工具选型、代码编写、参数调优、结果验证到成果撰写，需要跨越多个专业领域。化学、分子模拟等学科面临类似问题。传统模式下研究者需手动切换数十种工具和数据库，上下文极易断裂。现有单模型方案存在三大瓶颈：
 
 1. 无法同时满足百万级长上下文推理、多模态图表理解、大规模并行搜索和低成本执行的需求
 2. 生信分析中大量文献以 PDF 图表形式呈现关键数据，需要真正的多模态理解而非纯文本阅读
@@ -105,25 +119,37 @@ B站直播和实时互动场景需要极高上下文和快速响应，小米 MiM
 
 ### OpenAgent Labforge —— 系统运行时基础框架
 
-为 ABRIS 提供 OpenCode 内核集成与插件化扩展能力。
+为 extendai-lab-Studio 提供 OpenCode 内核集成与插件化扩展能力。
 
-仓库：https://github.com/BOHUYESHAN-APB/openagent-labforge
+仓库：https://github.com/Linxira-OS/openagent-labforge
 
 ### bioSkills —— 生物信息学技能库
 
-预置了大量生物信息学相关的 SKILLS.md 和代码示例，专为 AI 驱动的科研分析设计。提供分析技能库、流水线模板、工具适配和代码生成指导。
+预置了 400+ 生物信息学相关的 SKILL.md 模式和代码示例，覆盖基因组学、转录组学、蛋白质组学、代谢组学等 63 个子领域。通过 openagent-labforge 插件机制加载到本系统 Layer 1。
 
 仓库：https://github.com/BOHUYESHAN-APB/bioSkills
 
+### ChemClaw —— 化学/计算化学技能库
+
+26 个化学领域技能，覆盖 ADMET 预测、pKa、NMR/IR/UV-Vis/MS/XRD 光谱模拟、分子可视化、几何优化（xTB）、化学文件格式转换、文献/反应数据提取。是本系统向化学和分子模拟方向扩展的核心依赖。
+
+仓库：https://github.com/BOHUYESHAN-APB/ChemClaw
+
+### ClawBio —— 生物信息学执行层
+
+59 个可执行生信技能，带完整的 Bio Orchestrator 路由引擎、可复现性包（commands.sh + environment.yml + SHA-256）和 1401 个测试。覆盖药物基因组学、GWAS、单细胞、变异注释、蛋白质组学、宏基因组学等。其编排模式和可复现性设计是本系统的重要参考。
+
+仓库：https://github.com/BOHUYESHAN-APB/ClawBio
+
 ### N-T-AI —— 早期 AI 实时互动项目
 
-早期的类 Neuro-sama AI 虚拟主播项目，已在 B站进行开发者直播。技术栈为 Python 后端。积累了实时交互、上下文管理、工具调用等基础工程经验。局限在于 Omni 模型适配不理想、上下文容易膨胀、工具链不够清晰、Python 运行时效率不足。
+早期的类 Neuro-sama AI 虚拟主播项目，已在 B站进行开发者直播。技术栈为 Python 后端。积累了实时交互、上下文管理、工具调用等基础工程经验。
 
 仓库：https://github.com/BOHUYESHAN-APB/N-T-AI
 
-### CMYKE —— ABRIS 人性化交互层 / N-T-AI 的 Rust 重构迭代版
+### CMYKE —— 人性化交互层 / N-T-AI 的 Rust 重构迭代版
 
-使用 Rust 完全重构后端，在运行时效率、上下文管理和工具链明确性上大幅提升。Omni 模型高效适配，Minecraft 模组控制 AI 自由探索与游玩，B站直播。同时作为 ABRIS 系统的人性化交互层，面向不熟悉专业交互界面的用户群体。
+使用 Rust 完全重构后端，Omni 模型高效适配，Minecraft 模组控制 AI 自由探索与游玩，B站直播。同时作为本系统的人性化交互层。
 
 仓库：https://github.com/BOHUYESHAN-APB/CMYKE
 

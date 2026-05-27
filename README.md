@@ -1,78 +1,57 @@
 # extendai-lab-Studio
 
-extendai-lab-Studio is an OpenCode-native bioinformatics AI system scaffold (formerly ABRIS).
+extendai-lab-Studio is the orchestration and automation layer for AI-driven scientific research. It runs on top of OpenCode as the embedded kernel, coordinates multiple LLMs to execute complex research workflows, and delegates domain-specific work to external skill repositories.
 
-OpenCode is the embedded kernel. ABRIS is the product and domain layer that governs bioinformatics workflows, safety, acquisition, and skills on top of that kernel.
+## Positioning
 
-The design still follows a six-layer architecture:
+extendai-lab-Studio is **not** a skill library. It is the system that orchestrates skills, models, and tools into end-to-end research pipelines.
 
-- Layer 0: environment adaptation
-- Layer 1: atomic skills
-- Layer 2: analysis pipelines
-- Layer 3: orchestration and scheduling
-- Layer 4: data loop and knowledge accumulation
-- Layer 5: intelligent research and discovery
+| Project | Role |
+|---------|------|
+| **extendai-lab-Studio** (this repo) | Orchestration layer — multi-model coordination, pipeline planning, autonomy governance, control plane |
+| [openagent-labforge](https://github.com/Linxira-OS/openagent-labforge) | OpenCode ecosystem — runtime framework, plugin system, SDK integration |
+| [bioSkills](https://github.com/BOHUYESHAN-APB/bioSkills) | Bioinformatics skills — 400+ SKILL.md patterns for genomics, transcriptomics, proteomics, etc. |
+| [ChemClaw](https://github.com/BOHUYESHAN-APB/ChemClaw) | Chemistry skills — molecular simulation, spectra prediction, ADMET, chemical file conversion |
+| [ClawBio](https://github.com/BOHUYESHAN-APB/ClawBio) | Bioinformatics execution — 59 executable skills with orchestrator, reproducibility bundles, and tests |
 
-## Project Layout
+## Architecture
 
-```text
-src/abris/
-configs/
-packages/opencode-bridge/
-design-docs/
-tests/
-```
+Six-layer design:
 
-## Target State
+- **Layer 0** — Environment adaptation and file-intake safety
+- **Layer 1** — Atomic skill loading from external repositories
+- **Layer 2** — Analysis pipeline planning and validation
+- **Layer 3** — Multi-model orchestration and scheduling
+- **Layer 4** — Data loop, run logging, and knowledge accumulation
+- **Layer 5** — Autonomous research discovery
 
-The intended end-state is:
+## Multi-Model Strategy
 
-- OpenCode embedded internally as the isolated runtime kernel
-- ABRIS as the bioinformatics product layer over that kernel
-- long-duration autonomous work with checkpoint, resume, review, and failure policy
-- autonomous but policy-bounded research-boundary discovery
-- autonomous but policy-bounded external data acquisition from approved sources
-- skills-guided code generation and optimization with review and audit gates
-- sequencing-company data intake, validation, adaptation, and analysis
+The system coordinates multiple LLMs, each assigned a specific role:
+
+- **DeepSeek V4 Pro** — primary code executor and task commander (1M context, no native multimodal)
+- **MiMo 2.5 Pro** — fast reviewer and task dispatcher (cost-effective, TTS support)
+- **MiMo 2.5 Standard** — multimodal literature analysis (native image recognition)
+- **DeepSeek V4 Flash** — parallel search and tool calling (paper search, academic search)
+- **Gemma 4 27B** (local) — external vision module for DS Pro
+- **Gemini 3.1 Flash/Pro** — Google Scholar supplement
+- **GPT 5.4** — final output review (1M context, stable)
 
 ## Current Scope
 
-The current code is still intentionally minimal, but it is now oriented toward the OpenCode-kernel-first target above rather than toward a standalone ABRIS runtime.
+Implemented:
+- Bounded OpenCode runtime bridge and lifecycle surface
+- File-intake safety and environment-aware pre-execution blocking
+- Config-backed pipeline loading and validation
+- Orchestrator baseline with intent classification and pipeline planning
+- Control plane UI (React + Ant Design + ECharts)
+- Local authentication and session management
 
-Runtime direction:
-
-- OpenCode is the embedded kernel and tool/runtime center
-- ABRIS is the bioinformatics product and policy layer on top of OpenCode
-- Python owns domain logic, pipeline planning, and tool adaptation
-- OpenCode SDK is the default integration path
-- OpenCode plugins are the preferred customization path
-- Direct OpenCode core modification is the last resort
-- All design documents live under `design-docs/` and are ignored by Git
-
-## Design Docs
-
-- `design-docs/architecture-principles.md`
-- `design-docs/opencode-integration.md`
-- `design-docs/pipeline-planning-spec.md`
-- `design-docs/skills-spec.md`
-- `design-docs/skill-manifest-yaml-spec.md`
-- `design-docs/sequencing-safety-policy.md`
-- `design-docs/sequencing-gateway-design.md`
-- `design-docs/autonomy-governance-spec.md`
-
-## Implemented Now
-
-- bounded OpenCode runtime bridge and lifecycle surface
-- file-intake safety and environment-aware pre-execution blocking
-- config-backed pipeline loading and validation
-- orchestrator baseline and tests
-
-## Deferred for Later Phases
-
-- bounded external data acquisition policy enforcement in code
-- skills-guided code generation and optimization loops
-- durable long-running autonomy with checkpoint and resume
-- real bioinformatics tool adapters
+Deferred:
+- External skill repository auto-loading (bioSkills, ChemClaw, ClawBio)
+- Autonomous research-boundary discovery
+- Long-running checkpoint and resume
+- Domain-specific tool adapters (Python, R, CLI, Docker, Conda)
 
 ## Quick Start
 
@@ -87,41 +66,31 @@ npm install
 npm run build
 ```
 
-## Run from Any Git Bash Directory
-
-One-time install from the repo root:
+Install and launch the UI:
 
 ```bash
 python -m pip install -e .
-```
-
-Then, from any Git Bash directory, start the local UI with:
-
-```bash
 abris-ui
 ```
 
-Default launcher behavior:
+Default launcher: enables OpenCode runtime, starts control plane on `127.0.0.1:18080`, default login `admin / abris-admin`.
 
-- enables OpenCode runtime (`ABRIS_USE_OPENCODE=1`)
-- enables repo-local paper-search MCP (`ABRIS_ENABLE_PAPER_SEARCH_MCP=1`)
-- uses bounded local policy defaults
-- starts the control plane on `127.0.0.1:18080`
-
-Override host/port or auth the same way as the raw control-plane entrypoint:
+Override:
 
 ```bash
 abris-ui --host 127.0.0.1 --port 18081 --username admin --password abris-admin
 ```
 
-If Git Bash cannot find `abris-ui`, ensure the Python Scripts directory for the interpreter used by `python -m pip install -e .` is on your `PATH`.
+## Project Layout
 
-## Near-Term Build Order
+```text
+src/abris/           # Python domain logic
+configs/             # Pipeline and tool configurations
+packages/            # TypeScript packages (opencode-bridge, control-plane-ui)
+tests/               # Test suite
+docs/                # Design documents
+```
 
-1. Make embedded OpenCode the default kernel path instead of an optional helper path
-2. Add bounded autonomy governance to planning and runtime execution
-3. Add atomic skill manifests and file-based registry loading
-4. Add source-governed external data acquisition flow
-5. Add skills-guided code generation and optimization flow
-6. Add adapters for Python, R, CLI, Docker, and Conda
-7. Build the first runnable RNA-seq workflow against real controlled inputs
+## License
+
+GNU AGPL-3.0

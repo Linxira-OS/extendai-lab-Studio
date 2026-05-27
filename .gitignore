@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .mypy_cache/
+.ruff_cache/
 .venv/
 venv/
 dist/
@@ -20,9 +21,9 @@ future/
 .abris-runtime/
 .opencode/
 %TEMP%/
+abris-local-runtime-test/
 node_modules/
 **/node_modules/
-.venv/
 **/.venv/
 third_party/
 **/third_party/
